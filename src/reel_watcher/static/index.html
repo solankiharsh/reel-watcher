@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Reel watcher · Your creative library</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script src="/static/app.js?v=0.1.1" defer></script>
+  </head>
+  <body>
+    <aside class="rail">
+      <a class="brand" href="/" aria-label="Reel watcher home"
+        ><span class="mark">rw</span><span>reel<br />watcher</span></a
+      >
+      <p class="eyebrow">YOUR WORKSPACE</p>
+      <nav>
+        <button class="nav active" data-view="library">
+          Library <span id="nav-count">0</span></button
+        ><button class="nav" data-view="briefs">Content briefs</button
+        ><button class="nav" data-view="profile">Creator profile</button>
+      </nav>
+      <div class="rail-bottom">
+        <span class="local-dot"></span> Private by design
+        <p>Analysis stays on your Mac.<br />Your references stay yours.</p>
+        <small id="storage">Checking storage…</small>
+      </div>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <span class="eyebrow">FROM SAVED TO CREATED</span>
+          <h1 id="page-title">Your creative library<span>.</span></h1>
+          <p id="page-subtitle">
+            Understand the hook. Find the pattern. Make it your own.
+          </p>
+        </div>
+        <button class="primary" id="open-import">+ Add references</button>
+      </header>
+      <div id="message" class="message" role="status" hidden></div>
+      <section id="library-view">
+        <div class="stats">
+          <div><strong id="total">0</strong><span>References</span></div>
+          <div><strong id="ready">0</strong><span>Ready to study</span></div>
+          <div><strong id="queued">0</strong><span>Awaiting study</span></div>
+          <div class="status-stat">
+            <span class="local-dot"></span
+            ><span id="processing-status">Local workspace</span>
+          </div>
+        </div>
+        <div class="toolbar">
+          <label class="search"
+            ><span>⌕</span
+            ><input
+              id="search"
+              type="search"
+              placeholder="Search topics, hooks, or references"
+              aria-label="Search library" /></label
+          ><select id="status-filter" aria-label="Filter status">
+            <option value="">All statuses</option>
+            <option value="queued">Queued</option>
+            <option value="ready">Ready</option>
+            <option value="failed">Needs attention</option>
+            <option value="processing">Processing</option></select
+          ><select id="collection-filter" aria-label="Filter collection">
+            <option value="">All collections</option>
+          </select>
+        </div>
+        <div class="selection-bar">
+          <label><input type="checkbox" id="select-all" /> Select visible</label
+          ><span id="selection-count">0 selected</span>
+          <div>
+            <button id="preview-batch" disabled>Study selected</button
+            ><button id="open-brief" disabled>Create a brief ↗</button>
+          </div>
+        </div>
+        <div id="library-grid" class="grid"></div>
+        <div id="empty" class="empty">
+          <div class="empty-art">
+            <span>01</span><i></i><span>02</span><i></i><span>03</span>
+          </div>
+          <span class="eyebrow">A REFERENCE IS A STARTING POINT</span>
+          <h2>Turn your saved reels<br />into your next idea.</h2>
+          <p>
+            Add a few links, an Instagram saved-data export,<br />or videos from
+            your Mac. Choose what to study next.
+          </p>
+          <button class="primary" id="empty-import">
+            Add your first references ↗
+          </button>
+          <div class="empty-steps">
+            <span><b>01</b> Collect</span><span><b>02</b> Understand</span
+            ><span><b>03</b> Create</span>
+          </div>
+        </div>
+        <p class="footnote">
+          Observations are linked to source evidence. Explanations of
+          effectiveness are hypotheses.
+        </p>
+      </section>
+      <section id="briefs-view" hidden><div id="brief-list"></div></section>
+      <section id="profile-view" hidden>
+        <form id="profile-form" class="profile-panel">
+          <span class="eyebrow">A STARTING POINT FOR EVERY BRIEF</span>
+          <h2>Who are you creating for?</h2>
+          <p>Save your preferences once. You can adjust them for each brief.</p>
+          <label
+            >Audience<input
+              name="audience"
+              maxlength="500"
+              placeholder="e.g. Designers getting started with AI" /></label
+          ><label
+            >Objective<input
+              name="objective"
+              maxlength="500"
+              placeholder="e.g. Teach one practical technique" /></label
+          ><label
+            >Format<input
+              name="format"
+              maxlength="300"
+              placeholder="e.g. 45-second screen-recorded tutorial" /></label
+          ><label
+            >Voice<textarea
+              name="voice"
+              maxlength="500"
+              placeholder="e.g. Clear, curious, no hype"
+            ></textarea></label
+          ><button class="primary">Save profile</button>
+        </form>
+      </section>
+    </main>
+    <dialog id="import-dialog">
+      <div class="dialog-head">
+        <h2>Add references</h2>
+        <button class="close" aria-label="Close">×</button>
+      </div>
+      <p>Nothing is downloaded or analyzed until you select a batch.</p>
+      <form id="import-form">
+        <label
+          >Instagram links<textarea
+            id="import-text"
+            rows="5"
+            placeholder="One link per line. Optional: URL [tab] collection"
+          ></textarea></label
+        ><button class="primary">Add links to queue</button>
+      </form>
+      <div class="divider">or import a file</div>
+      <label class="file-button"
+        >Saved-data export<input
+          id="export-file"
+          type="file"
+          accept=".json,.html,.txt,.tsv" /></label
+      ><label class="file-button"
+        >Local videos<input
+          id="video-files"
+          type="file"
+          accept="video/mp4,video/quicktime,video/webm,video/x-matroska"
+          multiple
+      /></label>
+      <p class="muted">
+        Exports: JSON, HTML or a URL list. Videos: up to 250 MB and 10 minutes
+        each. Export titles are not assumed to be collection names.
+      </p>
+    </dialog>
+    <dialog id="batch-dialog">
+      <div class="dialog-head">
+        <h2>Review your batch</h2>
+        <button class="close" aria-label="Close">×</button>
+      </div>
+      <p>
+        Completed studies are reused. Models must be installed locally before
+        analysis.
+      </p>
+      <label
+        >Download method<select id="provider">
+          <option value="public">Public download · no paid API</option>
+          <option value="apify">Apify · paid, explicit approval</option>
+        </select></label
+      >
+      <div id="paid-fields" hidden>
+        <label
+          >Current estimate per reel (USD)<input
+            id="unit-cost"
+            type="number"
+            min="0.0001"
+            max="2"
+            step="0.0001"
+            placeholder="Check current Apify pricing" /></label
+        ><label
+          >Total batch cap (USD)<input
+            id="batch-cap"
+            type="number"
+            min="0.01"
+            max="2"
+            step="0.01"
+            value="0.10"
+        /></label>
+        <p class="muted">
+          Up to three paid downloads per pilot batch. The cap may be charged
+          even if a download fails. A token must be set in the server's
+          environment.
+        </p>
+      </div>
+      <button id="refresh-preview">Calculate preview</button>
+      <div id="batch-summary"></div>
+      <button id="run-batch" class="primary" disabled>
+        Start reviewed batch
+      </button>
+    </dialog>
+    <dialog id="detail-dialog" class="wide">
+      <div class="dialog-head">
+        <span class="eyebrow">REFERENCE STUDY</span
+        ><button class="close" aria-label="Close">×</button>
+      </div>
+      <div id="detail-content"></div>
+    </dialog>
+    <dialog id="brief-dialog">
+      <div class="dialog-head">
+        <h2>Make it your own</h2>
+        <button class="close" aria-label="Close">×</button>
+      </div>
+      <p id="brief-selection"></p>
+      <form id="brief-form">
+        <label
+          >Your topic<input
+            name="topic"
+            required
+            maxlength="500"
+            placeholder="What do you want to make?" /></label
+        ><label
+          >Audience override<input
+            name="audience"
+            maxlength="500"
+            placeholder="Use saved profile" /></label
+        ><label
+          >Objective override<input
+            name="objective"
+            maxlength="500"
+            placeholder="Use saved profile" /></label
+        ><label
+          >Format override<input
+            name="format"
+            maxlength="300"
+            placeholder="Use saved profile" /></label
+        ><label
+          >Voice override<input
+            name="voice"
+            maxlength="500"
+            placeholder="Use saved profile" /></label
+        ><button class="primary">Generate original brief</button>
+        <p class="muted">
+          Uses local models. Three hook options, a beat outline, visual
+          suggestions and linked references.
+        </p>
+      </form>
+    </dialog>
+  </body>
+</html>
